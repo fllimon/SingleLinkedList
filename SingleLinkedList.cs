@@ -10,12 +10,7 @@ namespace MySimpleLinkedList
     class SingleLinkedList<T> : IEnumerable<T>
     {
         private Node _first = null;
-        
-        public SingleLinkedList<T> Clone()
-        {
-            return new SingleLinkedList<T> { _first = this._first };
-        }
-
+               
         public bool IsEmpty()
         {
             return (_first == null);
