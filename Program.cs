@@ -14,31 +14,22 @@ namespace MySimpleLinkedList
 
             list.AddToBegin("ghkvbh");
             list.AddToEnd("PreEnd");
-
-            foreach (string item in list)
-            {
-                Console.Write($"\t{item}");
-            }
-            Console.WriteLine();
-
-            list.AddToBegin("ttyfdf");
-            list.AddToBegin("w.z");
-
-            foreach (string item in list)
-            {
-                Console.Write($"\t{item}");
-            }
-            Console.WriteLine();
-
             list.AddToBegin("Start");
             list.AddToEnd("End");
 
             foreach (string item in list)
             {
-                Console.Write($"\t{item}");
+                Console.Write($"{item}\t");
+            }
+            Console.WriteLine();
+
+            list.RemoveItem("ghkvbh");
+
+            foreach (string item in list)
+            {
+                Console.Write($"{item}\t");
             }
 
-            Console.WriteLine();
 
             Console.ReadKey();
         }

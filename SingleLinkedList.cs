@@ -10,6 +10,7 @@ namespace MySimpleLinkedList
     class SingleLinkedList<T> : IEnumerable<T>
     {
         private Node _first = null;
+        private Node _last = null;
                
         public bool IsEmpty()
         {
@@ -43,6 +44,44 @@ namespace MySimpleLinkedList
             node.Info = item;
             node.Next = _first;
             _first = node;
+        }
+
+        public void RemoveItem(T item)
+        {
+            Node node = new Node(item);
+            Node current = _first;
+            Node someElement = null;
+
+            node.Info = item;
+
+            while (current != null)
+            {
+                if (current.Info.Equals(item))
+                {
+                    if (someElement != null)
+                    {
+                        someElement.Next = current.Next;
+
+                        if (current.Next == null)
+                        {
+                            _last = someElement;
+                        }
+                    }
+                    else
+                    {
+                        _first = _first.Next;
+
+                        if (_first == null)
+                        {
+                            _last = null;
+                        }
+                    }
+
+                    break;
+                }
+                someElement = current;
+                current = current.Next;
+            }
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
