@@ -10,12 +10,24 @@ namespace MySimpleLinkedList
     {
         static void Main(string[] args)
         {
-            SingleLinkedList<string> list = new SingleLinkedList<string>();
+            //TestLinkedList(new SingleLinkedList<string>());
+            TestLinkedList(new DoubleList<string>());
 
-            list.AddToBegin("ghkvbh");
-            list.AddToEnd("PreEnd");
-            list.AddToBegin("Start");
-            list.AddToEnd("End");
+            Console.WriteLine();
+
+            //TestLinkedList(new DoubleList<string>());
+
+            Console.ReadKey();
+        }
+
+        private static void TestLinkedList(ILinkedList<string> list)
+        {
+            list.AddToBegin("End");
+            list.AddToBegin("asf");
+            list.AddToBegin("grfg");
+            list.AddToBegin("Epppp");
+            list.AddToBegin("dghj");
+            list.AddToBegin("tyutyi");
 
             foreach (string item in list)
             {
@@ -23,15 +35,20 @@ namespace MySimpleLinkedList
             }
             Console.WriteLine();
 
-            list.RemoveItem("ghkvbh");
+            foreach (string item in list.GetReverse(true))
+            {
+                Console.Write($"{item}\t");
+            }
+            Console.WriteLine();
+
+            list.RemoveFromBegin();
+            list.RemoveFromEnd();
 
             foreach (string item in list)
             {
                 Console.Write($"{item}\t");
             }
-
-
-            Console.ReadKey();
+            Console.WriteLine();
         }
     }
 }

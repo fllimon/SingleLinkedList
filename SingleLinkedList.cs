@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MySimpleLinkedList
 {
-    class SingleLinkedList<T> : IEnumerable<T>
+    class SingleLinkedList<T> : ILinkedList<T>, IEnumerable<T>
     {
         private Node _first = null;
         private Node _last = null;
@@ -17,13 +17,13 @@ namespace MySimpleLinkedList
             return (_first == null);
         }
 
-        public void AddToEnd(T item)
+        public T AddToEnd(T item)
         {
             Node node = new Node(item);
 
             if (IsEmpty())
             {
-                _first = node;
+                _last = node;
             }
             else
             {
@@ -34,71 +34,158 @@ namespace MySimpleLinkedList
                 }
                 node.Info = item;
                 current.Next = node;
-            }            
-        }
-
-        public void AddToBegin(T item)
-        {
-            Node node = new Node(item);
-
-            node.Info = item;
-            node.Next = _first;
-            _first = node;
-        }
-
-        public void RemoveItem(T item)
-        {
-            Node node = new Node(item);
-            Node current = _first;
-            Node someElement = null;
-
-            node.Info = item;
-
-            while (current != null)
-            {
-                if (current.Info.Equals(item))
-                {
-                    if (someElement != null)
-                    {
-                        someElement.Next = current.Next;
-
-                        if (current.Next == null)
-                        {
-                            _last = someElement;
-                        }
-                    }
-                    else
-                    {
-                        _first = _first.Next;
-
-                        if (_first == null)
-                        {
-                            _last = null;
-                        }
-                    }
-
-                    break;
-                }
-                someElement = current;
-                current = current.Next;
             }
+
+            return node.Info;
+        }
+
+        public T GetFirst()
+        {
+            if (IsEmpty())
+            {
+                _last = null;
+            }
+
+            T result = _first.Info;
+            _first = _first.Next;
+
+            return result;
+        }
+
+        public T AddToBegin(T item)
+        {
+            Node node = new Node(item)
+            {
+                Info = item,
+                Next = _first
+            };
+
+            if (IsEmpty())
+            {
+                _last = node;
+            }
+
+            _first = node;
+
+            return _first.Info;
+        }
+
+        public T RemoveFromBegin()
+        {
+            if (!IsEmpty())
+            {
+                Node current = _first;
+                current = current.Next;
+                _first = current;
+            }
+
+            return _first.Info;
+        }
+
+        public T RemoveFromEnd()
+        {
+            if (IsEmpty())
+            {
+                _last = null;
+            }
+            else
+            {
+                Node lastNode = _first;
+
+                if (lastNode.Next == null)
+                {
+                    _last = null;
+                }
+                else
+                {
+                    while (lastNode.Next != null)
+                    {
+                        lastNode = lastNode.Next.Next;
+                    }
+
+                    lastNode.Next = null;
+                }
+            }
+
+            return _last.Info;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            Node current = _first;
-
-            while (current != null)
-            {
-                yield return current.Info;
-                current = current.Next;
-            }
+            return new ListConteiner(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)this).GetEnumerator();
+            return new ListConteiner(this);
         }
+
+        public IEnumerable<T> GetReverse(bool isReverse)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region ======------ CONTEINER ENUMERATOR -----=====
+
+        private struct ListConteiner : IEnumerator<T>
+        {
+            #region =====---- PRIVATE DATA ----====
+
+            private readonly SingleLinkedList<T> _list;
+            private Node _current;
+            private int _position;
+            //private bool _isPosition;
+
+            #endregion
+
+            #region =====----- CTOR -----====
+
+            public ListConteiner(SingleLinkedList<T> list)
+            {
+                _current = list._first;
+                _list = list;
+                _position = -1;
+                //_isPosition = false;
+            }
+
+            #endregion
+
+            T IEnumerator<T>.Current 
+            {
+                get
+                {
+                    return _current.Info;
+                }
+            }
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return _current.Info;
+                }
+            }
+
+            void IDisposable.Dispose()
+            {    
+            }
+
+            bool IEnumerator.MoveNext()
+            {
+                if (_position++ != -1)
+                {
+                    _current = _current.Next;
+                }
+
+                return _current != null;
+            }
+
+            void IEnumerator.Reset()
+            {
+                _current = _list._first;
+            }
+        }
+
+        #endregion
 
         private class Node
         {
