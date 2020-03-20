@@ -84,19 +84,9 @@ namespace MySimpleLinkedList
             return _last.Info;
         }
 
-        public IEnumerable<T> GetReverse(bool isReverse)
+        public IEnumerable<T> GetReverse()
         {
-            Node current = _last;
-
-            if (isReverse)
-            {
-                if (current != null)
-                {
-                    current = current.Previus;
-                }
-            }
-
-            return (IEnumerable<T>)current;    // ToDo: !! ВОПРОС? !!
+            return new ReverseContainer(this);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -169,6 +159,63 @@ namespace MySimpleLinkedList
         }
 
         #endregion
+
+        private struct ReverseContainer : IEnumerable<T>, IEnumerator<T>
+        {
+            private readonly DoubleList<T> _doubleList;
+            private Node _current;
+
+            public ReverseContainer(DoubleList<T> doubleList)
+            {
+                _doubleList = doubleList;
+                _current = doubleList._last;
+            }
+
+            public T Current
+            {
+                get
+                {
+                    return _current.Info;
+                }
+            }
+
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return _current.Info;
+                }
+            }
+
+            public void Dispose()
+            {
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new ReverseContainer();
+            }
+
+            public bool MoveNext()
+            {
+                if (_current != null)
+                {
+                    _current = _current.Previus;
+                }
+
+                return _current != null;
+            }
+
+            public void Reset()
+            {
+                throw new NotImplementedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return new ReverseContainer();
+            }
+        }
 
         private class Node
         {

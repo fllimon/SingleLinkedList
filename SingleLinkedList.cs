@@ -120,7 +120,7 @@ namespace MySimpleLinkedList
             return new ListConteiner(this);
         }
 
-        public IEnumerable<T> GetReverse(bool isReverse)
+        public IEnumerable<T> GetReverse()
         {
             throw new NotImplementedException();
         }

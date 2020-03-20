@@ -35,7 +35,7 @@ namespace MySimpleLinkedList
             }
             Console.WriteLine();
 
-            foreach (string item in list.GetReverse(true))
+            foreach (string item in list.GetReverse())
             {
                 Console.Write($"{item}\t");
             }

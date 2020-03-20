@@ -20,6 +20,6 @@ namespace MySimpleLinkedList
 
         T RemoveFromEnd();
 
-        IEnumerable<T> GetReverse(bool isReverse);
+        IEnumerable<T> GetReverse();
     }
 }
