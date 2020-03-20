@@ -133,8 +133,7 @@ namespace MySimpleLinkedList
 
             private readonly SingleLinkedList<T> _list;
             private Node _current;
-            private int _position;
-            //private bool _isPosition;
+            private bool _isPosition;
 
             #endregion
 
@@ -144,8 +143,7 @@ namespace MySimpleLinkedList
             {
                 _current = list._first;
                 _list = list;
-                _position = -1;
-                //_isPosition = false;
+                _isPosition = false;
             }
 
             #endregion
@@ -171,10 +169,11 @@ namespace MySimpleLinkedList
 
             bool IEnumerator.MoveNext()
             {
-                if (_position++ != -1)
+                if (_isPosition)
                 {
                     _current = _current.Next;
                 }
+                _isPosition = true;
 
                 return _current != null;
             }

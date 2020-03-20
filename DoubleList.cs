@@ -86,7 +86,9 @@ namespace MySimpleLinkedList
 
         public IEnumerable<T> GetReverse()
         {
-            return new ReverseContainer(this);
+            ReverseContainer container = new ReverseContainer(this);
+
+            return container;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -107,7 +109,7 @@ namespace MySimpleLinkedList
 
             private readonly DoubleList<T> _doubleList;
             private Node _current;
-            private int _position;
+            private bool _isPosition;
             
             #endregion
 
@@ -117,7 +119,7 @@ namespace MySimpleLinkedList
             {
                 _doubleList = doubleList;
                 _current = _doubleList._first;
-                _position = -1;
+                _isPosition = false;
             }
 
             #endregion
@@ -144,10 +146,11 @@ namespace MySimpleLinkedList
 
             public bool MoveNext()
             {
-                if (_position++ != -1)
+                if (_isPosition)
                 {
                     _current = _current.Next;
                 }
+                _isPosition = true;
 
                 return _current != null;
             }
@@ -164,11 +167,13 @@ namespace MySimpleLinkedList
         {
             private readonly DoubleList<T> _doubleList;
             private Node _current;
-
+            private bool _isPosition;
+            
             public ReverseContainer(DoubleList<T> doubleList)
             {
                 _doubleList = doubleList;
                 _current = doubleList._last;
+                _isPosition = false;
             }
 
             public T Current
@@ -191,29 +196,30 @@ namespace MySimpleLinkedList
             {
             }
 
-            public IEnumerator<T> GetEnumerator()
-            {
-                return new ReverseContainer();
-            }
-
             public bool MoveNext()
             {
-                if (_current != null)
+                if (_isPosition)
                 {
                     _current = _current.Previus;
                 }
+                _isPosition = true;
 
                 return _current != null;
             }
 
             public void Reset()
             {
-                throw new NotImplementedException();
+                _current = _doubleList._last;
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return this;
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return new ReverseContainer();
+                return this;
             }
         }
 

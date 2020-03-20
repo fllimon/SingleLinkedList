@@ -34,17 +34,27 @@ namespace MySimpleLinkedList
                 Console.Write($"{item}\t");
             }
             Console.WriteLine();
+            Console.WriteLine();
 
-            foreach (string item in list.GetReverse())
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("REMOVE FIRST ELEMENT");
+
+            list.RemoveFromBegin();
+            //list.RemoveFromEnd();
+
+            foreach (string item in list)
             {
                 Console.Write($"{item}\t");
             }
+
+            Console.WriteLine();
             Console.WriteLine();
 
-            list.RemoveFromBegin();
-            list.RemoveFromEnd();
+            Console.ForegroundColor = ConsoleColor.Red;
 
-            foreach (string item in list)
+            Console.WriteLine("AFTER REVERSE: ");
+
+            foreach (string item in list.GetReverse())
             {
                 Console.Write($"{item}\t");
             }
