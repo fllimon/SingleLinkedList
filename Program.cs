@@ -25,9 +25,9 @@ namespace MySimpleLinkedList
             list.AddToBegin("End");
             list.AddToBegin("asf");
             list.AddToBegin("grfg");
-            list.AddToBegin("Epppp");
-            list.AddToBegin("dghj");
-            list.AddToBegin("tyutyi");
+            list.AddToEnd("Epppp");
+            list.AddToEnd("dghj");
+            list.AddToEnd("tyutyi");
 
             foreach (string item in list)
             {
@@ -36,21 +36,41 @@ namespace MySimpleLinkedList
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("REMOVE FIRST ELEMENT");
+            string first = list.RemoveFromBegin();
+            Console.WriteLine("first: {0}", first);
+            // list.RemoveFromEnd();
 
-            list.RemoveFromBegin();
+            foreach (string item in list)
+            {
+                Console.Write($"{item}\t");
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("get from end:");
+
+            //while (!list.IsEmpty())
+            //{
+            //    string last = list.RemoveFromEnd();
+            //    Console.WriteLine("last: {0}", last);
+            //}
+
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("REMOVE FIRST ELEMENT");
+
+            //list.RemoveFromBegin();
             //list.RemoveFromEnd();
 
-            foreach (string item in list)
-            {
-                Console.Write($"{item}\t");
-            }
+            //foreach (string item in list)
+            //{
+            //    Console.Write($"{item}\t");
+            //}
 
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.ForegroundColor = ConsoleColor.Red;
+            //Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("AFTER REVERSE: ");
 

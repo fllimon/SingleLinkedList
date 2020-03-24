@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MySimpleLinkedList
 {
     class SingleLinkedList<T> : ILinkedList<T>, IEnumerable<T>
     {
+        #region =======------ PRIVATE DATA -------=====
+
         private Node _first = null;
         private Node _last = null;
-               
+
+        #endregion
+
+        #region ========------ METHOD'S -------=======
+
         public bool IsEmpty()
         {
             return (_first == null);
         }
 
-        public T AddToEnd(T item)
+        public void AddToEnd(T item)
         {
             Node node = new Node(item);
 
@@ -35,8 +38,6 @@ namespace MySimpleLinkedList
                 node.Info = item;
                 current.Next = node;
             }
-
-            return node.Info;
         }
 
         public T GetFirst()
@@ -52,7 +53,7 @@ namespace MySimpleLinkedList
             return result;
         }
 
-        public T AddToBegin(T item)
+        public void AddToBegin(T item)
         {
             Node node = new Node(item)
             {
@@ -66,8 +67,6 @@ namespace MySimpleLinkedList
             }
 
             _first = node;
-
-            return _first.Info;
         }
 
         public T RemoveFromBegin()
@@ -110,6 +109,15 @@ namespace MySimpleLinkedList
             return _last.Info;
         }
 
+        public void GetSortList()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ======------- IENUMERABLE/IENUMERATOR METHOD ------=======
+
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return new ListConteiner(this);
@@ -124,6 +132,8 @@ namespace MySimpleLinkedList
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         #region ======------ CONTEINER ENUMERATOR -----=====
 
@@ -186,6 +196,8 @@ namespace MySimpleLinkedList
 
         #endregion
 
+        #region ======----- LIST NODE ------=====
+
         private class Node
         {
             #region ======------ PRIVATE DATA -----=====
@@ -211,5 +223,7 @@ namespace MySimpleLinkedList
 
             #endregion
         }
+
+        #endregion
     }
 }

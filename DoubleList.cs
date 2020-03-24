@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MySimpleLinkedList
 {
-    class DoubleList<T> : ILinkedList<T>, IEnumerable<T>
-        //where T : IComparable<T>
+    class DoubleList<T> : ILinkedList<T>
+        where T : IComparable<T>
     {
         #region =====---- PRIVATE DATA ----======
 
@@ -17,12 +14,14 @@ namespace MySimpleLinkedList
 
         #endregion
 
+        #region =======------ METHOD'S -------=======
+
         public bool IsEmpty()
         {
             return (_first == null);
         }
 
-        public T AddToBegin(T item)
+        public void AddToBegin(T item)
         {
             Node newNode = new Node(item);
 
@@ -38,55 +37,95 @@ namespace MySimpleLinkedList
             }
 
             _first = newNode;
-
-            return newNode.Info;
         }
 
-        public T AddToEnd(T item)
+        public void AddToEnd(T item)
         {
             Node newNode = new Node(item);
 
             if (IsEmpty())
             {
+                _first = newNode;
                 _last = newNode;
             }
             else
             {
-                _last.Previus = newNode;
+                newNode.Previus = _last;
+                _last.Next = newNode;
             }
 
             _last = newNode;
+        }
 
-            return newNode.Info;
+        private void Swap(Node firstItem, Node secondItem)
+        {
+            Node tmp = firstItem;
+            firstItem = secondItem;
+            secondItem = tmp;
+        }
+
+        public void GetSortList()
+        {
+            Node current = _first;
+
+            while (current.Next != null)
+            {
+                if (current.Info.CompareTo(current.Next.Info) != 0)   // ToDo: Доделать!
+                {
+                    Swap(current.Previus, current.Next);
+                }
+            }
         }
 
         public T RemoveFromBegin()
         {
-            if (!IsEmpty())
+            if (IsEmpty())
             {
-                Node current = _first;
-                current = current.Next;
-                _first = current;
+                //throw 
+                // попытка извлечения из пустого списка
             }
 
-            return _first.Info;
+            T result = _first.Info;
+            _first = _first.Next;
+
+            if (_first == null)
+            {
+                _last = null;
+            }
+
+            return result;
         }
 
         public T RemoveFromEnd()
         {
-            if (_last != null)
+            if (IsEmpty())
             {
-                Node current = _last;
-                current = current.Previus;
-                _last = current;
+                //throw 
+                // попытка извлечения из пустого списка
+            }            
+
+            //Node current = _last;
+            //current = current.Previus;    // ToDo: Не работает!
+            //_last = current;
+
+            T result = _last.Info;
+            _last = _last.Previus;
+
+            if (_last == null)
+            {
+                _first = null;
             }
 
-            return _last.Info;
+            return result;
         }
+
+        #endregion  
+
+        #region ======----- IENUMERABLE/IENUMERATOR METHOD ------======
 
         public IEnumerable<T> GetReverse()
         {
-            ReverseContainer container = new ReverseContainer(this);
+            ReverseIterator container = new ReverseIterator(this);
 
             return container;
         }
@@ -100,6 +139,8 @@ namespace MySimpleLinkedList
         {
             return new DoubleListContainer(this);
         }
+
+        #endregion  
 
         #region =====----- CONTAINER IENUMERATOR -----=====
 
@@ -163,13 +204,14 @@ namespace MySimpleLinkedList
 
         #endregion
 
-        private struct ReverseContainer : IEnumerable<T>, IEnumerator<T>
+        #region ======------ REVERSE CONTAINER -----======
+        private struct ReverseIterator : IEnumerable<T>, IEnumerator<T>
         {
             private readonly DoubleList<T> _doubleList;
             private Node _current;
             private bool _isPosition;
             
-            public ReverseContainer(DoubleList<T> doubleList)
+            public ReverseIterator(DoubleList<T> doubleList)
             {
                 _doubleList = doubleList;
                 _current = doubleList._last;
@@ -214,7 +256,7 @@ namespace MySimpleLinkedList
 
             public IEnumerator<T> GetEnumerator()
             {
-                return this;
+                return this;    // ToDo: !!! Вопрос ???
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -222,6 +264,10 @@ namespace MySimpleLinkedList
                 return this;
             }
         }
+
+        #endregion
+
+        #region ======----- LIST NODE ------======
 
         private class Node
         {
@@ -236,5 +282,7 @@ namespace MySimpleLinkedList
 
             public Node Previus { get; set; } = null;
         }
+
+        #endregion
     }
 }

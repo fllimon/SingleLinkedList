@@ -8,17 +8,17 @@ namespace MySimpleLinkedList
 {
     interface ILinkedList<T> : IEnumerable<T>
     {
-        //T GetFirst();
-
         bool IsEmpty();
 
-        T AddToBegin(T item);
+        void AddToBegin(T item);
 
-        T AddToEnd(T item);
+        void AddToEnd(T item);
 
         T RemoveFromBegin();
 
         T RemoveFromEnd();
+
+        void GetSortList();
 
         IEnumerable<T> GetReverse();
     }
