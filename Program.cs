@@ -22,12 +22,12 @@ namespace MySimpleLinkedList
 
         private static void TestLinkedList(ILinkedList<string> list)
         {
-            list.AddToBegin("End");
-            list.AddToBegin("asf");
+            list.AddToBegin("hEnd");
+            list.AddToBegin("iasf");
             list.AddToBegin("grfg");
-            list.AddToEnd("Epppp");
-            list.AddToEnd("dghj");
-            list.AddToEnd("tyutyi");
+            list.AddToEnd("kEpppp");
+            list.AddToEnd("adghj");
+            list.AddToEnd("ptyutyi");
 
             foreach (string item in list)
             {
@@ -36,19 +36,23 @@ namespace MySimpleLinkedList
             Console.WriteLine();
             Console.WriteLine();
 
-            string first = list.RemoveFromBegin();
-            Console.WriteLine("first: {0}", first);
+            #region //
+
+            //string first = list.RemoveFromBegin();
+            //Console.WriteLine("first: {0}", first);
             // list.RemoveFromEnd();
 
-            foreach (string item in list)
-            {
-                Console.Write($"{item}\t");
-            }
-            Console.WriteLine();
-            Console.WriteLine();
+            //list.Sort();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("get from end:");
+            //foreach (string item in list)
+            //{
+            //    Console.Write($"{item}\t");
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine();
+
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("get from end:");
 
             //while (!list.IsEmpty())
             //{
@@ -72,12 +76,27 @@ namespace MySimpleLinkedList
 
             //Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("AFTER REVERSE: ");
+            //Console.WriteLine("AFTER REVERSE: ");
 
-            foreach (string item in list.GetReverse())
+            //foreach (string item in list.GetReverse())
+            //{
+            //    Console.Write($"{item}\t");
+            //}
+            //Console.WriteLine();
+
+            #endregion
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine();
+
+            list.Sort();
+
+            foreach (string item in list)
             {
                 Console.Write($"{item}\t");
             }
+            Console.WriteLine();
             Console.WriteLine();
         }
     }

@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using MySimpleLinkedList.Exception;
+
 namespace MySimpleLinkedList
 {
-    class DoubleList<T> : ILinkedList<T>
+    class DoubleList<T> : ILinkedList<T>, IQueue<T>, IStack<T>
         where T : IComparable<T>
     {
         #region =====---- PRIVATE DATA ----======
@@ -57,32 +59,112 @@ namespace MySimpleLinkedList
             _last = newNode;
         }
 
-        private void Swap(Node firstItem, Node secondItem)
+        private bool Swap(Node currentItem)
         {
-            Node tmp = firstItem;
-            firstItem = secondItem;
-            secondItem = tmp;
+            if (currentItem.Next == null)
+            {
+                return false;
+            }
+
+            bool result = false;
+
+            if (currentItem.Info.CompareTo(currentItem.Next.Info) > 0)
+            {
+                bool isCurrenFirst = (currentItem == _first);
+                bool isCurrenNextLast = (currentItem.Next == _last);
+
+                // currentItem   <--->   currentItem.Next
+
+                if (!isCurrenFirst)
+                {
+                    currentItem.Previus.Next = currentItem.Next;    // (1)
+                }
+                
+                currentItem.Next.Previus = currentItem.Previus;    //(2)
+
+                Node temp = currentItem.Next;    // ссылка на следующий узел  (3)
+
+                currentItem.Next = temp.Next;    // (4)
+                temp.Next = currentItem;    // (5)
+
+                if (!isCurrenNextLast)
+                {
+                    currentItem.Next.Previus = currentItem;    // (6)
+                }
+
+                if (isCurrenFirst)
+                {
+                    _first = temp;
+                }
+
+                if (isCurrenNextLast)
+                {
+                    _last = currentItem;
+                }
+
+                result = true;
+            }
+
+            //Node tmp = currentItem;
+            //firstItem = secondItem;
+            //secondItem = tmp;
+
+
+            return result;
         }
 
-        public void GetSortList()
+        public void Sort()
         {
-            Node current = _first;
-
-            while (current.Next != null)
+            if (IsEmpty())
             {
-                if (current.Info.CompareTo(current.Next.Info) != 0)   // ToDo: Доделать!
-                {
-                    Swap(current.Previus, current.Next);
+                //throw new GetNonexistentElementExeption();  
+                return;
+            }            
+
+            bool swaped = false;
+
+            do
+            {
+                Node current = _first;
+
+                swaped = false;
+
+                while (current.Next != null)
+                {                    
+                    if (Swap(current))
+                    {
+                        swaped = true;
+                    }
+                    current = current.Next;
                 }
+                foreach (var item in this)
+                {
+                    Console.Write($"{item} ");
+                }
+
+                Console.WriteLine();
             }
+            while (swaped);
+
+        }
+
+        public T GetFirst()
+        {
+            if (IsEmpty())
+            {
+                throw new GetNonexistentElementExeption();
+            }
+
+            T result = _first.Info;
+
+            return result;
         }
 
         public T RemoveFromBegin()
         {
             if (IsEmpty())
             {
-                //throw 
-                // попытка извлечения из пустого списка
+                throw new RemoveNonexistentElementExeption();
             }
 
             T result = _first.Info;
@@ -100,13 +182,8 @@ namespace MySimpleLinkedList
         {
             if (IsEmpty())
             {
-                //throw 
-                // попытка извлечения из пустого списка
+                throw new RemoveNonexistentElementExeption();
             }            
-
-            //Node current = _last;
-            //current = current.Previus;    // ToDo: Не работает!
-            //_last = current;
 
             T result = _last.Info;
             _last = _last.Previus;
@@ -140,7 +217,40 @@ namespace MySimpleLinkedList
             return new DoubleListContainer(this);
         }
 
-        #endregion  
+        #region ====---- IQueue -----=====
+
+        void IQueue<T>.Put(T item)
+        {
+            AddToEnd(item);
+        }
+
+        T IQueue<T>.Get()
+        {
+            return GetFirst();
+        }
+
+        #endregion
+
+        #region ======----- IStack ------======
+
+        void IStack<T>.Push(T item)
+        {
+            AddToBegin(item);
+        }
+
+        T IStack<T>.Pop()
+        {
+            return GetFirst();
+        }
+
+        public void GetSortList()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #endregion
 
         #region =====----- CONTAINER IENUMERATOR -----=====
 
@@ -256,7 +366,7 @@ namespace MySimpleLinkedList
 
             public IEnumerator<T> GetEnumerator()
             {
-                return this;    // ToDo: !!! Вопрос ???
+                return this;    
             }
 
             IEnumerator IEnumerable.GetEnumerator()

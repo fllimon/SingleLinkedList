@@ -44,9 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleList.cs" />
+    <Compile Include="MyException\GetNonexistentElementExeption.cs" />
     <Compile Include="ILinkedList.cs" />
+    <Compile Include="IQueue.cs" />
+    <Compile Include="IStack.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MyException\RemoveNonexistentElementExeption.cs" />
     <Compile Include="SingleLinkedList.cs" />
   </ItemGroup>
   <ItemGroup>

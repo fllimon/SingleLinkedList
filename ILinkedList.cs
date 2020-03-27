@@ -14,11 +14,11 @@ namespace MySimpleLinkedList
 
         void AddToEnd(T item);
 
+        void Sort();
+
         T RemoveFromBegin();
 
         T RemoveFromEnd();
-
-        void GetSortList();
 
         IEnumerable<T> GetReverse();
     }

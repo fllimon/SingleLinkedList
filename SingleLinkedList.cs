@@ -133,6 +133,11 @@ namespace MySimpleLinkedList
             throw new NotImplementedException();
         }
 
+        public void Sort()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region ======------ CONTEINER ENUMERATOR -----=====
